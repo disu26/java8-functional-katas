@@ -22,6 +22,6 @@ public class Kata2 {
 
         return movies.stream().filter(p -> p.getRating().equals(5.0))
                                             .map(Movie::getId)
-                                            .collect(Collectors.toList());
+                                            .collect(Collectors.toUnmodifiableList());
     }
 }

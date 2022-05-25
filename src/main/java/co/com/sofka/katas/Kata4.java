@@ -28,6 +28,6 @@ public class Kata4 {
                                     .map(p -> Map.of("id", p.getId(), "title", p.getTitle(), "boxart",
                                             new BoxArt(150, 200,
                                                     p.getBoxarts().stream().map(BoxArt::getUrl).toString())))
-                                    .collect(Collectors.toList());
+                                    .collect(Collectors.toUnmodifiableList());
     }
 }

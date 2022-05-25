@@ -25,6 +25,6 @@ public class Kata3 {
         return movieLists.stream().map(MovieList::getVideos)
                                     .flatMap(Collection::stream)
                                     .map(Movie::getId)
-                                    .collect(Collectors.toList());
+                                    .collect(Collectors.toUnmodifiableList());
     }
 }

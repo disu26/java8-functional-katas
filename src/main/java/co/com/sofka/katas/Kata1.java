@@ -13,6 +13,10 @@ import java.util.stream.Collectors;
     Output: List of ImmutableMap.of("id", "5", "title", "Bad Boys")
 */
 public class Kata1 {
+    private Kata1(){
+        throw new IllegalStateException("Kata 1");
+    }
+
     public static List<Map> execute() {
         List<Movie> movies = DataUtil.getMovies();
 

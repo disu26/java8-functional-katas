@@ -1,14 +1,12 @@
 package co.com.sofka.katas;
 
 import co.com.sofka.model.BoxArt;
-import co.com.sofka.model.Movie;
 import co.com.sofka.model.MovieList;
 import co.com.sofka.util.DataUtil;
 
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 /*
@@ -25,30 +23,17 @@ public class Kata7 {
     public static List<Map> execute() {
         List<MovieList> movieLists = DataUtil.getMovieLists();
 
-        Optional<BoxArt> smallestBoxArt = movieLists.stream()
+        return  movieLists.stream()
                 .map(MovieList::getVideos)
                 .flatMap(Collection::stream)
-                .map(Movie::getBoxarts)
-                .flatMap(Collection::stream)
-                .reduce((smallest, boxArt) -> {
-                    Integer smallestLarge = smallest.getHeight() * smallest.getWidth();
-                    Integer boxArtLarge = boxArt.getHeight() * boxArt.getWidth();
-
-                    if(Boolean.TRUE.equals(greaterThan(smallestLarge, boxArtLarge))){
-                        smallest = boxArt;
-                    }
-                    return smallest;
-                });
-
-        return movieLists.stream()
-                            .map(MovieList::getVideos)
-                            .flatMap(Collection::stream)
-                            .filter(m -> m.getBoxarts().equals(smallestBoxArt.get()))
-                            .map(m -> Map.of("id", m.getId(), "title", m.getTitle(), "boxart", smallestBoxArt.get().getUrl()))
-                            .collect(Collectors.toUnmodifiableList());
+                .map(m -> Map.of("id", m.getId(), "title", m.getTitle(), "url", m.getBoxarts()
+                        .stream().reduce((box1, box2) -> Boolean.TRUE.equals(lowerThan(box1.getWidth() * box1.getHeight(),
+                                box2.getHeight() * box2.getWidth())) ? box1 : box2)
+                        .map(BoxArt::getUrl)))
+                            .collect(Collectors.toList());
     }
 
-    public static Boolean greaterThan(Integer num1, Integer num2){
+    public static Boolean lowerThan(Integer num1, Integer num2){
         return num1 < num2;
     }
 }

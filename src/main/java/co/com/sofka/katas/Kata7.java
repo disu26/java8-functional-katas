@@ -26,11 +26,12 @@ public class Kata7 {
         return  movieLists.stream()
                 .map(MovieList::getVideos)
                 .flatMap(Collection::stream)
-                .map(m -> Map.of("id", m.getId(), "title", m.getTitle(), "url", m.getBoxarts()
-                        .stream().reduce((box1, box2) -> Boolean.TRUE.equals(lowerThan(box1.getWidth() * box1.getHeight(),
+                .map(m -> Map.of("id", m.getId(), "title", m.getTitle(), "url",
+                        m.getBoxarts().stream()
+                                .reduce((box1, box2) -> Boolean.TRUE.equals(lowerThan(box1.getWidth() * box1.getHeight(),
                                 box2.getHeight() * box2.getWidth())) ? box1 : box2)
-                        .map(BoxArt::getUrl)))
-                            .collect(Collectors.toList());
+                                .map(BoxArt::getUrl)))
+                .collect(Collectors.toList());
     }
 
     public static Boolean lowerThan(Integer num1, Integer num2){

@@ -1,11 +1,10 @@
 package co.com.sofka.katas;
 
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.ImmutableMap;
 import co.com.sofka.util.DataUtil;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /*
     Goal: Create a datastructure from the given data:
@@ -49,13 +48,18 @@ import java.util.Map;
     Output: the given datastructure
 */
 public class Kata10 {
+    private Kata10(){
+        throw new IllegalStateException("Kata 10");
+    }
+
     public static List<Map> execute() {
         List<Map> lists = DataUtil.getLists();
         List<Map> videos = DataUtil.getVideos();
 
-        return ImmutableList.of(ImmutableMap.of("name", "someName", "videos", ImmutableList.of(
-                ImmutableMap.of("id", 5, "title", "The Chamber"),
-                ImmutableMap.of("id", 3, "title", "Fracture")
-        )));
+        return lists.stream().map(l -> Map.of("name", l.get("name"), "videos",
+                                            videos.stream().filter(v -> v.get("listId").equals(l.get("id")))
+                                                    .map(v -> Map.of("id", v.get("id"), "title", v.get("title")))
+                                                    .collect(Collectors.toList())))
+                            .collect(Collectors.toList());
     }
 }

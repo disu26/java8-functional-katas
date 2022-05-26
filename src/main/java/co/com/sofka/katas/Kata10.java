@@ -59,7 +59,7 @@ public class Kata10 {
         return lists.stream().map(l -> Map.of("name", l.get("name"), "videos",
                                             videos.stream().filter(v -> v.get("listId").equals(l.get("id")))
                                                     .map(v -> Map.of("id", v.get("id"), "title", v.get("title")))
-                                                    .collect(Collectors.toList())))
-                            .collect(Collectors.toList());
+                                                    .collect(Collectors.toUnmodifiableList())))
+                            .collect(Collectors.toUnmodifiableList());
     }
 }
